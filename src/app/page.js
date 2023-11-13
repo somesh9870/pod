@@ -12,6 +12,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [projectData, setProjectData] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const storedUserInfo = localStorage.getItem("userInfo");
@@ -28,13 +29,16 @@ export default function Home() {
 
   const getProjects = async (id) => {
     try {
+      setLoading(true);
       const res = await axios.get(
         `https://easy-puce-woodpecker-suit.cyclic.app/project/${id}`
       );
       console.log("response", res.data.data);
       setProjectData(res.data.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -58,10 +62,18 @@ export default function Home() {
         </div>
       </div>
 
-      {projectData && projectData.length > 0 ? (
-        <HeroII getProjects={getProjects} projectData={projectData} />
+      {loading ? (
+        <div className="flex text-2xl justify-center items-center h-['250px']">
+          Loading...
+        </div>
       ) : (
-        <Hero getProjects={getProjects} />
+        <>
+          {projectData && projectData.length > 0 ? (
+            <HeroII getProjects={getProjects} projectData={projectData} />
+          ) : (
+            <Hero getProjects={getProjects} />
+          )}
+        </>
       )}
 
       <UserModal

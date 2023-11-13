@@ -6,13 +6,41 @@ import Sidebar from "@/components/Sidebar";
 import Cloud from "@/components/svg/Cloud";
 import Spotify from "@/components/svg/Spotify";
 import Youtube from "@/components/svg/Youtube";
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import axios from "axios";
 
 const page = () => {
   const [open, setOpen] = useState(false);
+  const [episode, setEpisode] = useState({
+    title: "",
+    description: "",
+  });
 
   const cancelButtonRef = useRef(null);
+
+  const getProjectEpisode = async (projectId) => {
+    try {
+      const res = await axios.get(
+        `https://easy-puce-woodpecker-suit.cyclic.app/project/episode/${projectId}`
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addProjectEpisode = async () => {
+    try {
+      const res = await axios.post(
+        `https://easy-puce-woodpecker-suit.cyclic.app/project/episode/${projectId}`,
+        episode
+      );
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getProjectEpisode();
+  }, []);
 
   const cardArr = [
     { icon: <Youtube height={50} width={50} />, title: "Youtube Video" },
@@ -49,7 +77,11 @@ const page = () => {
           <div className="grid grid-cols-3 gap-x-16 gap-y-8 mt-12">
             {cardArr.length > 0 &&
               cardArr.map((card, index) => {
-                return <Card key={index} card={card} />;
+                return (
+                  <div className="cursor-pointer" onClick={() => setOpen(true)}>
+                    <Card key={index} card={card} />
+                  </div>
+                );
               })}
           </div>
           <p className="flex text-2xl text-[#999999] my-6 justify-center items-center">
@@ -214,6 +246,12 @@ const page = () => {
                                   id="price"
                                   className="block w-full rounded-md border-0 mb-2 py-3 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                   placeholder="Type here"
+                                  onChange={(e) =>
+                                    setEpisode({
+                                      ...episode,
+                                      title: e.target.value,
+                                    })
+                                  }
                                   required
                                 />
                               </div>
@@ -233,6 +271,12 @@ const page = () => {
                                   id="price"
                                   className="block w-full rounded-md border-0 mb-2 py-3 pl-4 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                   placeholder="Type here"
+                                  onChange={(e) =>
+                                    setEpisode({
+                                      ...episode,
+                                      description: e.target.value,
+                                    })
+                                  }
                                   required
                                 />
                               </div>

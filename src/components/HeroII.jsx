@@ -3,11 +3,13 @@
 import Plus from "./svg/Plus";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
-import { Fragment, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Fragment, useEffect, useRef, useState } from "react";
 
 const HeroII = ({ projectData, getProjects }) => {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
+  const router = useRouter();
 
   const [projectName, setprojectName] = useState("");
 
@@ -26,6 +28,18 @@ const HeroII = ({ projectData, getProjects }) => {
     }
   };
 
+  const getEpisodes = async () => {
+    try {
+      const data = await axios.get(
+        `https://easy-puce-woodpecker-suit.cyclic.app/project`
+      );
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getEpisodes();
+  }, []);
+
   function getInitials(name) {
     const words = name.split(" ");
 
@@ -33,6 +47,10 @@ const HeroII = ({ projectData, getProjects }) => {
 
     return initials.join("");
   }
+
+  const handleClick = async () => {
+    router.push("/upload");
+  };
 
   return (
     <div className="w-[80%] m-auto mt-8">
@@ -53,7 +71,10 @@ const HeroII = ({ projectData, getProjects }) => {
         {projectData && projectData.length > 0
           ? projectData.map((project) => {
               return (
-                <div className="flex border-2 gap-x-6 rounded-xl p-2 border-[#999999]">
+                <div
+                  className="flex border-2 gap-x-6 rounded-xl p-2 cursor-pointer border-[#999999]"
+                  onClick={handleClick}
+                >
                   <div className="bg-[#7E22CE] px-6 h-[100px] rounded-xl font-bold flex justify-center items-center text-6xl text-[#FFFFFF]">
                     {getInitials(project.projectName)}
                   </div>
