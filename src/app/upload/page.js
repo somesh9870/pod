@@ -17,12 +17,11 @@ const page = () => {
     title: "",
     description: "",
   });
+  const [episodeData, setEpisodeData] = useState([]);
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const projectId = searchParams.get("projectId");
-
-  console.log("first", projectId);
 
   const cancelButtonRef = useRef(null);
 
@@ -31,6 +30,8 @@ const page = () => {
       const res = await axios.get(
         `https://easy-puce-woodpecker-suit.cyclic.app/project/episode/${projectId}`
       );
+      console.log("first", res.data.data);
+      setEpisodeData(res?.data?.data);
     } catch (error) {
       console.log(error);
     }
@@ -79,125 +80,126 @@ const page = () => {
       <div className="w-[80%] px-14 py-12">
         <Nav />
 
-        {/* if there is no project episodes */}
-        <div>
-          <h1 className="mt-8 text-3xl font-extrabold text-[#7E22CE]">
-            Upload
-          </h1>
-          <div className="grid grid-cols-3 gap-x-16 gap-y-8 mt-12">
-            {cardArr.length > 0 &&
-              cardArr.map((card, index) => {
-                return (
-                  <div className="cursor-pointer" onClick={() => setOpen(true)}>
-                    <Card key={index} card={card} />
-                  </div>
-                );
-              })}
-          </div>
-          <p className="flex text-2xl text-[#999999] my-6 justify-center items-center">
-            or
-          </p>
-          <div className="border-dotted border-4 border-gray-400 rounded-xl p-4 flex flex-col items-center justify-center">
-            <div className="cursor-pointer" onClick={() => setOpen(true)}>
-              <Cloud height={90} width={90} />
+        {episodeData && episodeData.length > 0 ? (
+          <div>
+            <h1 className="mt-8 text-3xl font-extrabold text-[#7E22CE]">
+              Sample Project
+            </h1>
+
+            <div className="flex gap-7 mt-12">
+              {cardArray.length > 0 &&
+                cardArray.map((card, index) => {
+                  return <Card key={index} card={card} />;
+                })}
             </div>
-            <div className="p-4">
-              <p className="text-lg">
-                Select a file or drag and drop here (Podcast Media or
-                Transcription Text)
+
+            <div className="flex justify-between bg-[#7E22CE] text-[#FFFFFF] p-4 rounded-lg mt-8">
+              <p className="flex items-center font-bold px-2">
+                All files are processed! Your widget is ready to go!
               </p>
-              <p className="flex justify-center text-sm text-[#00000066]">
-                MP4, MOV, MP3, WAV, PDF, DOCX or TXT file{" "}
-              </p>
+              <div className="border border-black text-sm py-2 px-4 rounded-lg bg-[#FFFFFF] text-[#3C3C3C]">
+                Try it out!
+              </div>
             </div>
 
-            <div
-              onClick={() => setOpen(true)}
-              className="border border-gray-500 px-8 py-3 rounded-full cursor-pointer"
-            >
-              Select File
+            <table className="min-w-full border-2 border-[#999999] rounded-2xl mt-8 cardShadow">
+              <thead>
+                <tr className="border-b border-[#999999] ">
+                  <th className="py-2 px-4 text-left">Name</th>
+                  <th className="py-2 px-4 text-left">Upload Date & Time</th>
+                  <th className="py-2 px-4 text-left">Status</th>
+                  <th className="py-4 px-4 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="font-semibold">
+                <tr className="border-b border-[#999999] ">
+                  <td className="py-4 px-4 text-left">Sample Project</td>
+                  <td className="py-2 px-4 text-left">12 Jun 24 | 15:67</td>
+                  <td className="py-2 px-4 text-left">Done</td>
+                  <td className="py-2 px-4 text-left flex justify-center text-xs items-center">
+                    <p className="border border-[#D9D9D9] text-[#3C3C3C] px-3 py-2 ">
+                      Edit
+                    </p>
+                    <p className="border border-[#D9D9D9] px-3 text-[#FF274C] py-2">
+                      Delete
+                    </p>
+                  </td>
+                </tr>
+
+                <tr className="border-b border-[#999999] ">
+                  <td className="py-4 px-4 text-left">Sample Project</td>
+                  <td className="py-2 px-4 text-left">12 Jun 24 | 15:67</td>
+                  <td className="py-2 px-4 text-left">Done</td>
+                  <td className="py-2 px-4 text-left flex justify-center text-xs items-center">
+                    <p className="border border-[#D9D9D9] text-[#3C3C3C] px-3 py-2 ">
+                      Edit
+                    </p>
+                    <p className="border border-[#D9D9D9] px-3 text-[#FF274C] py-2">
+                      Delete
+                    </p>
+                  </td>
+                </tr>
+
+                <tr className="border-b border-[#999999] ">
+                  <td className="py-4 px-4 text-left">Sample Project</td>
+                  <td className="py-2 px-4 text-left">12 Jun 24 | 15:67</td>
+                  <td className="py-2 px-4 text-left">Done</td>
+                  <td className="py-2 px-4 text-left flex justify-center text-xs items-center">
+                    <p className="border border-[#D9D9D9] text-[#3C3C3C] px-3 py-2 ">
+                      Edit
+                    </p>
+                    <p className="border border-[#D9D9D9] px-3 text-[#FF274C] py-2">
+                      Delete
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div>
+            <h1 className="mt-8 text-3xl font-extrabold text-[#7E22CE]">
+              Upload
+            </h1>
+            <div className="grid grid-cols-3 gap-x-16 gap-y-8 mt-12">
+              {cardArr.length > 0 &&
+                cardArr.map((card, index) => {
+                  return (
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => setOpen(true)}
+                    >
+                      <Card key={index} card={card} />
+                    </div>
+                  );
+                })}
             </div>
-          </div>
-        </div>
-
-        {/* if there is episodes */}
-        {/* <div>
-          <h1 className="mt-8 text-3xl font-extrabold text-[#7E22CE]">
-            Sample Project
-          </h1>
-
-          
-          <div className="flex gap-7 mt-12">
-            {cardArray.length > 0 &&
-              cardArray.map((card, index) => {
-                return <Card key={index} card={card} />;
-              })}
-          </div>
-
-          
-          <div className="flex justify-between bg-[#7E22CE] text-[#FFFFFF] p-4 rounded-lg mt-8">
-            <p className="flex items-center font-bold px-2">
-              All files are processed! Your widget is ready to go!
+            <p className="flex text-2xl text-[#999999] my-6 justify-center items-center">
+              or
             </p>
-            <div className="border border-black text-sm py-2 px-4 rounded-lg bg-[#FFFFFF] text-[#3C3C3C]">
-              Try it out!
+            <div className="border-dotted border-4 border-gray-400 rounded-xl p-4 flex flex-col items-center justify-center">
+              <div className="cursor-pointer" onClick={() => setOpen(true)}>
+                <Cloud height={90} width={90} />
+              </div>
+              <div className="p-4">
+                <p className="text-lg">
+                  Select a file or drag and drop here (Podcast Media or
+                  Transcription Text)
+                </p>
+                <p className="flex justify-center text-sm text-[#00000066]">
+                  MP4, MOV, MP3, WAV, PDF, DOCX or TXT file{" "}
+                </p>
+              </div>
+
+              <div
+                onClick={() => setOpen(true)}
+                className="border border-gray-500 px-8 py-3 rounded-full cursor-pointer"
+              >
+                Select File
+              </div>
             </div>
           </div>
-
-          <table className="min-w-full border-2 border-[#999999] rounded-2xl mt-8 cardShadow">
-            <thead>
-              <tr className="border-b border-[#999999] ">
-                <th className="py-2 px-4 text-left">Name</th>
-                <th className="py-2 px-4 text-left">Upload Date & Time</th>
-                <th className="py-2 px-4 text-left">Status</th>
-                <th className="py-4 px-4 text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="font-semibold">
-              <tr className="border-b border-[#999999] ">
-                <td className="py-4 px-4 text-left">Sample Project</td>
-                <td className="py-2 px-4 text-left">12 Jun 24 | 15:67</td>
-                <td className="py-2 px-4 text-left">Done</td>
-                <td className="py-2 px-4 text-left flex justify-center text-xs items-center">
-                  <p className="border border-[#D9D9D9] text-[#3C3C3C] px-3 py-2 ">
-                    Edit
-                  </p>
-                  <p className="border border-[#D9D9D9] px-3 text-[#FF274C] py-2">
-                    Delete
-                  </p>
-                </td>
-              </tr>
-
-              <tr className="border-b border-[#999999] ">
-                <td className="py-4 px-4 text-left">Sample Project</td>
-                <td className="py-2 px-4 text-left">12 Jun 24 | 15:67</td>
-                <td className="py-2 px-4 text-left">Done</td>
-                <td className="py-2 px-4 text-left flex justify-center text-xs items-center">
-                  <p className="border border-[#D9D9D9] text-[#3C3C3C] px-3 py-2 ">
-                    Edit
-                  </p>
-                  <p className="border border-[#D9D9D9] px-3 text-[#FF274C] py-2">
-                    Delete
-                  </p>
-                </td>
-              </tr>
-
-              <tr className="border-b border-[#999999] ">
-                <td className="py-4 px-4 text-left">Sample Project</td>
-                <td className="py-2 px-4 text-left">12 Jun 24 | 15:67</td>
-                <td className="py-2 px-4 text-left">Done</td>
-                <td className="py-2 px-4 text-left flex justify-center text-xs items-center">
-                  <p className="border border-[#D9D9D9] text-[#3C3C3C] px-3 py-2 ">
-                    Edit
-                  </p>
-                  <p className="border border-[#D9D9D9] px-3 text-[#FF274C] py-2">
-                    Delete
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div> */}
+        )}
 
         {/* modal  */}
 
