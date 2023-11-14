@@ -19,6 +19,10 @@ const page = () => {
 
   const cancelButtonRef = useRef(null);
 
+  const { projectId } = router.query;
+
+  console.log("projectId", projectId);
+
   const getProjectEpisode = async (projectId) => {
     try {
       const res = await axios.get(

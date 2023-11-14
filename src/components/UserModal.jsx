@@ -8,7 +8,7 @@ const UserModal = ({ isOpen, onClose, onSave }) => {
   const handleSave = async () => {
     if (username && email) {
       try {
-        const data = await axios.post("http://localhost:5000/user/login", {
+        const data = await axios.post("https://easy-puce-woodpecker-suit.cyclic.app/user/login", {
           UserName: username,
           email,
         });

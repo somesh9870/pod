@@ -13,6 +13,8 @@ const HeroII = ({ projectData, getProjects }) => {
 
   const [projectName, setprojectName] = useState("");
 
+  console.log("projectdata", projectData);
+
   const handleCreateProject = async () => {
     setOpen(false);
     try {
@@ -48,8 +50,8 @@ const HeroII = ({ projectData, getProjects }) => {
     return initials.join("");
   }
 
-  const handleClick = async () => {
-    router.push("/upload");
+  const handleClick = async (projectId) => {
+    router.push(`/upload?projectId=${projectId}`);
   };
 
   return (
@@ -73,7 +75,7 @@ const HeroII = ({ projectData, getProjects }) => {
               return (
                 <div
                   className="flex border-2 gap-x-6 rounded-xl p-2 cursor-pointer border-[#999999]"
-                  onClick={handleClick}
+                  onClick={() => handleClick(project._id)}
                 >
                   <div className="bg-[#7E22CE] px-6 h-[100px] rounded-xl font-bold flex justify-center items-center text-6xl text-[#FFFFFF]">
                     {getInitials(project.projectName)}
