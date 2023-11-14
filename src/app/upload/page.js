@@ -51,6 +51,7 @@ const page = () => {
         `https://easy-puce-woodpecker-suit.cyclic.app/project/createEpi/${projectId}`,
         episode
       );
+      getProjectEpisode(projectId);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -58,15 +59,8 @@ const page = () => {
     }
   };
 
-  // const getProject = async () => {
-  //   try {
-  //     // const data = await axios.get(`https://easy-puce-woodpecker-suit.cyclic.app/project/${}`)
-  //   } catch (error) {}
-  // };
-
   useEffect(() => {
     getProjectEpisode(projectId);
-    // getProject();
   }, []);
 
   const cardArr = [
@@ -100,7 +94,7 @@ const page = () => {
           <Loader />
         ) : (
           <>
-            {episodeData && episodeData.length > 0 ? (
+            {episodeData && episodeData?.length > 0 ? (
               <div>
                 <h1 className="mt-8 text-3xl font-extrabold text-[#7E22CE]">
                   {episodeData[0].project.projectName}
