@@ -13,8 +13,6 @@ const HeroII = ({ projectData, getProjects }) => {
 
   const [projectName, setprojectName] = useState("");
 
-  console.log("projectdata", projectData);
-
   const handleCreateProject = async () => {
     setOpen(false);
     try {
@@ -35,11 +33,13 @@ const HeroII = ({ projectData, getProjects }) => {
       const data = await axios.get(
         `https://easy-puce-woodpecker-suit.cyclic.app/project`
       );
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    getEpisodes();
+    // getEpisodes();
   }, []);
 
   function getInitials(name) {
@@ -52,6 +52,7 @@ const HeroII = ({ projectData, getProjects }) => {
 
   const handleClick = async (projectId) => {
     router.push(`/upload?projectId=${projectId}`);
+    localStorage.setItem("projectId", projectId);
   };
 
   return (

@@ -9,6 +9,7 @@ import Youtube from "@/components/svg/Youtube";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const page = () => {
   const [open, setOpen] = useState(false);
@@ -16,12 +17,14 @@ const page = () => {
     title: "",
     description: "",
   });
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const projectId = searchParams.get("projectId");
+
+  console.log("first", projectId);
 
   const cancelButtonRef = useRef(null);
-
-  const { projectId } = router.query;
-
-  console.log("projectId", projectId);
 
   const getProjectEpisode = async (projectId) => {
     try {
@@ -39,11 +42,13 @@ const page = () => {
         `https://easy-puce-woodpecker-suit.cyclic.app/project/episode/${projectId}`,
         episode
       );
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    getProjectEpisode();
+    getProjectEpisode(projectId);
   }, []);
 
   const cardArr = [
