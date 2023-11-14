@@ -14,7 +14,6 @@ const dateConverte = (inputDateString) => {
 
   const formattedDate = `${day} ${monthAbbreviation} ${year} | ${hours}:${minutes}`;
 
-  console.log(formattedDate);
   return formattedDate;
 };
 

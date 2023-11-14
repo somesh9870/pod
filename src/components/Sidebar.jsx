@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import Setting from "./svg/Setting";
 import Logo from "./svg/Logo";
 
-const Sidebar = ({ projectName }) => {
+const Sidebar = ({ projectName, loading }) => {
   const [activeTab, setActiveTab] = useState("projects");
+
+  console.log(activeTab, "setActiveTab");
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -34,7 +36,11 @@ const Sidebar = ({ projectName }) => {
           <Logo width={35} height={35} />
           <p className="text-[#7E22CE] font-extrabold ml-2 text-2xl">LAMA.</p>
         </div>
-        <p className="text-black text-sm font-normal mb-2">{projectName}</p>
+        {loading ? (
+          <p>...Loading</p>
+        ) : (
+          <p className="text-black text-sm font-normal mb-2">{projectName}</p>
+        )}
       </div>
 
       {/* tab section */}
