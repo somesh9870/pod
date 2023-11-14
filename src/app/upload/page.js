@@ -49,8 +49,15 @@ const page = () => {
     }
   };
 
+  // const getProject = async () => {
+  //   try {
+  //     // const data = await axios.get(`https://easy-puce-woodpecker-suit.cyclic.app/project/${}`)
+  //   } catch (error) {}
+  // };
+
   useEffect(() => {
     getProjectEpisode(projectId);
+    // getProject();
   }, []);
 
   const cardArr = [
@@ -75,7 +82,7 @@ const page = () => {
   return (
     <div className="flex">
       <div className="w-[25%]">
-        <Sidebar />
+        <Sidebar projectName={episodeData[0]?.project?.projectName} />
       </div>
       <div className="w-[80%] px-14 py-12">
         <Nav />
@@ -83,7 +90,7 @@ const page = () => {
         {episodeData && episodeData.length > 0 ? (
           <div>
             <h1 className="mt-8 text-3xl font-extrabold text-[#7E22CE]">
-              Sample Project
+              {episodeData[0].project.projectName}
             </h1>
 
             <div className="flex gap-7 mt-12">
