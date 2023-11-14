@@ -9,7 +9,7 @@ import Youtube from "@/components/svg/Youtube";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const page = () => {
   const [open, setOpen] = useState(false);
@@ -37,9 +37,10 @@ const page = () => {
   };
 
   const addProjectEpisode = async () => {
+    setOpen(false);
     try {
       const res = await axios.post(
-        `https://easy-puce-woodpecker-suit.cyclic.app/project/episode/${projectId}`,
+        `https://easy-puce-woodpecker-suit.cyclic.app/project/createEpi/${projectId}`,
         episode
       );
     } catch (error) {
@@ -298,7 +299,7 @@ const page = () => {
                       <button
                         type="button"
                         className="inline-flex w-full justify-center rounded-md bg-[#211935] px-8 py-2 text-sm font-semibold text-[#F8F8F8] shadow-sm hover:bg-[#211935] sm:ml-3 sm:w-auto"
-                        onClick={() => setOpen(false)}
+                        onClick={addProjectEpisode}
                       >
                         Save
                       </button>
