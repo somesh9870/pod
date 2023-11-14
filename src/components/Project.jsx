@@ -63,9 +63,18 @@ const Project = () => {
     }
   };
 
-  const deleteProjectEpisode = async () => {
+  const deleteProjectEpisode = async (episodeId) => {
     try {
-    } catch (error) {}
+      setLoading(true);
+      const res = await axios.delete(
+        `https://easy-puce-woodpecker-suit.cyclic.app/project/episode/${episodeId}`
+      );
+      getProjectEpisode(projectId);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -230,7 +239,12 @@ const Project = () => {
                                     >
                                       Edit
                                     </p>
-                                    <p className="border border-[#D9D9D9] px-3 text-[#FF274C] py-2">
+                                    <p
+                                      className="border border-[#D9D9D9] px-3 text-[#FF274C] py-2"
+                                      onClick={() =>
+                                        deleteProjectEpisode(episode._id)
+                                      }
+                                    >
                                       Delete
                                     </p>
                                   </td>
