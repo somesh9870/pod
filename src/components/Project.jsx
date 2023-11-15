@@ -21,14 +21,14 @@ const Project = () => {
   });
   const [editText, setEditText] = useState(false);
   const [text, setText] = useState("");
+  const [newtext, setNewText] = useState("");
   const [episodeData, setEpisodeData] = useState([]);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [editingIndex, setEditingIndex] = useState(null);
+  const [indexValue, setIndexValue] = useState(null);
 
   const projectId = searchParams.get("projectId");
-
-  console.log("episodedta", episodeData);
 
   const cancelButtonRef = useRef(null);
 
@@ -77,6 +77,25 @@ const Project = () => {
     }
   };
 
+  const updateProjectEpisode = async () => {
+    try {
+      setLoading(true);
+      console.log("first", newtext);
+      const res = await axios.patch(
+        `https://easy-puce-woodpecker-suit.cyclic.app/project/episode/${episodeData[indexValue]._id}`,
+        { description: newtext }
+      );
+      getProjectEpisode(projectId);
+      setEdit(false);
+      setEditText(false);
+      setEditingIndex(null);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getProjectEpisode(projectId);
   }, []);
@@ -100,21 +119,21 @@ const Project = () => {
     },
   ];
 
-  // const handleEdit = (epi, index) => {
-  //   setEdit(true);
-  //   setText(episodeData[index].description);
-  // };
-
   const handleEdit = (epi, index) => {
     setEdit(true);
     setText(episodeData[index].description);
-    setEditingIndex(index);
   };
+
+  // const handleEdit = (epi, index) => {
+  //   setEdit(true);
+  //   setText(episodeData[index].description);
+  //   setEditingIndex(index);
+  // };
 
   const handleDiscard = () => {
     setEdit(false);
     setEditText(false);
-    setText(episodeData[editingIndex].description);
+    // setText(episodeData[editingIndex].description);
     setEditingIndex(null);
   };
 
@@ -137,7 +156,7 @@ const Project = () => {
                     <div className="flex gap-4 font-extrabold">
                       <p
                         className="py-2 px-6 rounded-lg border-2 border-[#FF274C] text-[#FF274C]"
-                        onClick={() => setEditText(false)}
+                        onClick={handleDiscard}
                       >
                         Discard
                       </p>
@@ -146,10 +165,7 @@ const Project = () => {
                       </p> */}
                       <p
                         className="py-2 px-6 rounded-lg text-[#F8F8F8] bg-[#211935]"
-                        onClick={() => {
-                          setEditText(false);
-                          setEditingIndex(null);
-                        }}
+                        onClick={updateProjectEpisode}
                       >
                         Save & Exit
                       </p>
@@ -168,20 +184,22 @@ const Project = () => {
                     <p className="text-start text-[#7E22CE] mb-3 font-bold">
                       Speaker
                     </p>
-                    {/* <p
+                    <p
                       className="overflow-y-scroll h-[88%]"
                       contentEditable={editText}
-                      onChange={(e) => editText(e.target.value)}
-                    > */}
-                    {/* {text} */}
-                    {/* </p> */}
+                      onInput={(e) => {
+                        setNewText(e.target.textContent);
+                      }}
+                    >
+                      {text}
+                    </p>
 
-                    <div
+                    {/* <div
                       className="overflow-y-scroll h-[88%]"
                       contentEditable={editText}
                       onInput={(e) => setText(e.target.textContent)}
                       dangerouslySetInnerHTML={{ __html: text }}
-                    />
+                    /> */}
                   </div>
                 ) : (
                   <>
@@ -235,7 +253,10 @@ const Project = () => {
                                   <td className="py-2 px-4 text-left flex justify-center text-xs items-center">
                                     <p
                                       className="border border-[#D9D9D9] text-[#3C3C3C] px-3 py-2 "
-                                      onClick={() => handleEdit(episode, index)}
+                                      onClick={() => {
+                                        handleEdit(episode, index);
+                                        setIndexValue(index);
+                                      }}
                                     >
                                       Edit
                                     </p>
